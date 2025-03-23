@@ -100,6 +100,15 @@ def get_bing_wallpaper(photo_size):
         # 根据分辨率构建图片URL
         image_url = f"https://cn.bing.com{image_data['urlbase']}_{photo_size}.jpg"
 
+        # 创建保存图片的文件夹
+        save_dir = os.path.join(os.path.expanduser("~"), "BingWallpapers")
+        os.makedirs(save_dir, exist_ok=True)
+
+        # 生成文件名（使用当前日期和分辨率）
+        today = datetime.now().strftime("%Y%m%d")
+        image_filename = f"bing_wallpaper_{today}_{photo_size}.jpg"
+        image_path = os.path.join(save_dir, image_filename)
+
         # 下载图片 - 添加重试逻辑
         max_retries = 3
         retry_count = 0
@@ -111,15 +120,6 @@ def get_bing_wallpaper(photo_size):
                 image_response = requests.get(image_url, timeout=20)  # 添加超时设置
 
                 if image_response.status_code == 200:
-                    # 创建保存图片的文件夹
-                    save_dir = os.path.join(os.path.expanduser("~"), "BingWallpapers")
-                    os.makedirs(save_dir, exist_ok=True)
-
-                    # 生成文件名（使用当前日期和分辨率）
-                    today = datetime.now().strftime("%Y%m%d")
-                    image_filename = f"bing_wallpaper_{today}_{photo_size}.jpg"
-                    image_path = os.path.join(save_dir, image_filename)
-
                     # 保存图片
                     with open(image_path, "wb") as f:
                         f.write(image_response.content)
