@@ -35,8 +35,8 @@ def process_video(input_file, width, height):
 
     # 处理导入的视频
     subprocess.run(
-        ['ffmpeg', '-hide_banner', '-i', input_file, '-vf', f'scale={width}:{height}', '-metadata:s:v:0', 'rotate=0',
-         '-c:v', 'h264_qsv', '-crf', '0', '-c:a', 'copy', output_file])
+        ['ffmpeg', '-hide_banner', '-v', 'error', '-stats', '-i', input_file, '-vf', f'scale={width}:{height}',
+         '-metadata:s:v:0', 'rotate=0', '-c:v', 'h264_qsv', '-c:a', 'copy', output_file])
 
 
 def process_single_file(input_file):
